@@ -1,3 +1,19 @@
+"use client";
+
+import Loader from "@/components/Loader";
+import { useRouter } from "next/navigation";
+import { useEffect } from "react";
+
 export default function Home() {
-  return <div className="text-9xl">hi there</div>;
+  const router = useRouter();
+
+  useEffect(() => {
+    router.push("/movies");
+  }, []);
+
+  return (
+    <div className="">
+      <Loader />
+    </div>
+  );
 }
