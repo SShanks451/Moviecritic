@@ -6,11 +6,19 @@ import axios from "axios";
 import { useParams } from "next/navigation";
 import { useEffect, useState } from "react";
 
+interface Review {
+  id: string;
+  movieId: string;
+  rating: string;
+  reviewerName: string;
+  reviewComment: string;
+}
+
 export default function UpdateMovie() {
   const params = useParams();
   const id = params.id;
 
-  const [review, setReview] = useState(null);
+  const [review, setReview] = useState<Review | null>(null);
 
   useEffect(() => {
     async function getReview() {

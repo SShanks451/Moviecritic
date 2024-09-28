@@ -6,6 +6,20 @@ import axios from "axios";
 import { useRouter } from "next/navigation";
 import Loader from "./Loader";
 
+interface FormData {
+  selectedMovie: string;
+  name: string;
+  rating: string;
+  comment: string;
+}
+
+interface Movie {
+  id: string;
+  name: string;
+  releaseDate: string;
+  averageRating: number;
+}
+
 export default function ReviewForm({
   id,
   movieId,
@@ -22,13 +36,13 @@ export default function ReviewForm({
   const router = useRouter();
 
   const [mode, setMode] = useState("add");
-  const [formData, setFormData] = useState({ selectedMovie: "", name: "", rating: "", comment: "" });
-  const [movies, setMovies] = useState(null);
+  const [formData, setFormData] = useState<FormData>({ selectedMovie: "", name: "", rating: "", comment: "" });
+  const [movies, setMovies] = useState<Movie[] | null>(null);
 
-  const handleFormSubmit = async (e: any) => {
+  const handleFormSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (mode === "add") {
-      const res = await axios.post("/api/reviews", {
+      await axios.post("/api/reviews", {
         movieId: formData.selectedMovie,
         reviewerName: formData.name,
         rating: parseFloat(formData.rating),
@@ -37,7 +51,7 @@ export default function ReviewForm({
       router.push("/movies");
     }
     if (mode === "edit") {
-      const res = await axios.patch(`/api/reviews/${id}`, {
+      await axios.patch(`/api/reviews/${id}`, {
         movieId: formData.selectedMovie,
         reviewerName: formData.name,
         rating: parseFloat(formData.rating),
@@ -57,6 +71,7 @@ export default function ReviewForm({
 
     if (id) {
       setMode("edit");
+      //@ts-expect-error abcd
       setFormData({ selectedMovie: movieId, name: name, rating: rating, comment: comment });
     }
   }, []);
@@ -84,7 +99,7 @@ export default function ReviewForm({
           <option value="" disabled>
             Select a movie
           </option>
-          {movies.map((m: any) => (
+          {movies.map((m) => (
             <option key={m.id} value={m.id}>
               {m.name}
             </option>

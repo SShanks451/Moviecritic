@@ -11,17 +11,17 @@ export default function MovieForm({ id, name, releaseDate }: { id?: string; name
   const [mode, setMode] = useState("add");
   const [formData, setFormData] = useState({ name: "", releaseDate: "" });
 
-  const handleFormSubmit = async (e: any) => {
+  const handleFormSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (mode === "add") {
-      const res = await axios.post("/api/movies", {
+      await axios.post("/api/movies", {
         name: formData.name,
         releaseDate: formData.releaseDate,
       });
       router.push("/movies");
     }
     if (mode === "edit") {
-      const res = await axios.patch(`/api/movies/${id}`, {
+      await axios.patch(`/api/movies/${id}`, {
         name: formData.name,
         releaseDate: formData.releaseDate,
       });

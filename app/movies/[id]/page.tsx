@@ -7,12 +7,25 @@ import axios from "axios";
 import { useParams } from "next/navigation";
 import { useEffect, useState } from "react";
 
+interface Movie {
+  id: string;
+  name: string;
+  averageRating?: number;
+}
+
+interface Review {
+  id: string;
+  reviewComment: string;
+  rating: number;
+  reviewerName: string;
+}
+
 export default function Movie() {
   const params = useParams();
   const id = params.id;
 
-  const [reviews, setReviews] = useState(null);
-  const [movie, setMovie] = useState(null);
+  const [reviews, setReviews] = useState<Review[] | null>(null);
+  const [movie, setMovie] = useState<Movie | null>(null);
 
   useEffect(() => {
     async function getMovieReviews() {
@@ -46,8 +59,8 @@ export default function Movie() {
         </div>
       </div>
       <div className="font-sans mx-20">
-        {reviews.map((r: any) => (
-          <ReviewCard id={r.id} comment={r.reviewComment} rating={r.rating} name={r.reviewerName} />
+        {reviews.map((r) => (
+          <ReviewCard key={r.id} id={r.id} comment={r.reviewComment} rating={r.rating} name={r.reviewerName} />
         ))}
       </div>
     </div>

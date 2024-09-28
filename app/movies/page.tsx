@@ -7,10 +7,17 @@ import Searchbar from "@/components/Searchbar";
 import axios from "axios";
 import { useEffect, useState } from "react";
 
+interface Movie {
+  id: string;
+  name: string;
+  releaseDate: string;
+  averageRating: number;
+}
+
 export default function Movies() {
-  const [moviesFix, setMoviesFix] = useState(null);
-  const [movies, setMovies] = useState(null);
-  const [searchText, setSearchText] = useState("");
+  const [moviesFix, setMoviesFix] = useState<Movie[] | null>(null);
+  const [movies, setMovies] = useState<Movie[] | null>(null);
+  const [searchText, setSearchText] = useState<string>("");
 
   useEffect(() => {
     async function getAllMovies() {
@@ -27,8 +34,8 @@ export default function Movies() {
     if (searchText.trim() === "") {
       setMovies(moviesFix);
     } else {
-      const filteredMovies = moviesFix.filter((movie) => movie.name.toLowerCase().includes(searchText.toLowerCase()));
-      setMovies(filteredMovies);
+      const filteredMovies = moviesFix?.filter((movie) => movie.name.toLowerCase().includes(searchText.toLowerCase()));
+      setMovies(filteredMovies || null);
     }
   }, [searchText]);
 
@@ -55,7 +62,7 @@ export default function Movies() {
           />
         </div>
         <div className="flex flex-wrap gap-10 my-10">
-          {movies.map((m: any) => (
+          {movies.map((m) => (
             <Moviecard key={m.id} id={m.id} name={m.name} releaseDate={m.releaseDate} rating={m.averageRating} />
           ))}
         </div>

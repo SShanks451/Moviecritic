@@ -1,4 +1,4 @@
-export default function Searchbar({ value, onChange }: { value: string; onChange: (e: any) => void }) {
+export default function Searchbar({ value, onChange }: { value: string; onChange: (e: React.ChangeEvent<HTMLInputElement>) => void }) {
   return (
     <input
       type="text"

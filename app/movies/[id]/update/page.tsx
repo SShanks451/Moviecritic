@@ -6,11 +6,17 @@ import axios from "axios";
 import { useParams } from "next/navigation";
 import { useEffect, useState } from "react";
 
+interface Movie {
+  id: string;
+  name: string;
+  releaseDate: string;
+}
+
 export default function UpdateMovie() {
   const params = useParams();
   const id = params.id;
 
-  const [movie, setMovie] = useState(null);
+  const [movie, setMovie] = useState<Movie | null>(null);
 
   useEffect(() => {
     async function getMovie() {
